@@ -22,7 +22,7 @@ namespace MediaPlayer
             InitializeComponent();
             this.Icon = Properties.Resources.ico_music;
             musicList = new List<string>();
-            // 创建一个ListView排序类的对象，并设置listView1的排序器
+            // 创建一个ListView排序类的对象，并设置playList的排序器
             lvwColumnSorter = new ListViewColumnSorter();
             this.playList.ListViewItemSorter = lvwColumnSorter;
             readFile();
