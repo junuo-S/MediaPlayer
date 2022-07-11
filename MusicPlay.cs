@@ -83,5 +83,10 @@ namespace MediaPlayer
             mciSendString(@"seek temp_music to " + pos.ToString(), null, 0, 0);
             mciSendString(@"play temp_music", " ", 0, 0);
         }
+
+        public void setVolume(int volume)
+        {
+            mciSendString(@"setaudio temp_music volume to " + volume.ToString(), null, 0, 0);
+        }
     }
 }

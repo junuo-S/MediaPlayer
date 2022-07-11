@@ -151,7 +151,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "listForm";
             this.Text = "播放列表";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.listForm_FormClosing);
             this.contextMenu.ResumeLayout(false);
             this.ResumeLayout(false);
 

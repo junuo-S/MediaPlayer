@@ -30,8 +30,8 @@ namespace MediaPlayer
             menuChoice = 0;
             this.Icon = Properties.Resources.ico_music;
             list = new listForm();
-            this.loadConfig();
             musicPlay = new MusicPlay();
+            this.loadConfig();
             isPlaying = false;
             isStopping = true;
             nowMusic = list.getCurrentMusic();
@@ -45,6 +45,12 @@ namespace MediaPlayer
             }
             updatePlayMode();
             this.Size = new Size(400, 200);
+            int desktopW = Screen.PrimaryScreen.Bounds.Width;
+            int desktopH = Screen.PrimaryScreen.Bounds.Height;
+            int globalX = desktopW / 2;
+            int globalY = desktopH / 4;
+            this.Location = new Point(globalX - 200, globalY - 100);
+            this.StartPosition = FormStartPosition.Manual;
 
             timer = new Thread(new ThreadStart(threadStart));
         }
@@ -67,6 +73,10 @@ namespace MediaPlayer
 
         private string getName(string path)
         {
+            if(path == "")
+            {
+                return "暂无播放";
+            }
             string temp = path.Replace("\\"+"\\", "\\");
             string[] ret = temp.Split('\\');
             return ret[ret.Length-1];
@@ -91,9 +101,10 @@ namespace MediaPlayer
 
         private void btnList_Click(object sender, EventArgs e)
         {
+            list.Location = new Point(this.Location.X, this.Location.Y + this.Size.Height);
+            list.StartPosition = FormStartPosition.Manual;
             if (list.ShowDialog() != DialogResult.Cancel)
             {
-                MessageBox.Show(list.DialogResult.ToString());
                 nowMusic = list.getCurrentMusic();
                 if (nowMusic != "")
                 {
@@ -112,6 +123,7 @@ namespace MediaPlayer
                     return;
                 }
                 musicPlay.PlayMusic(nowMusic);
+                musicPlay.setVolume(this.volBar.Value);
                 if(timer.IsAlive == false)
                 {
                     timer.Start();
@@ -123,15 +135,15 @@ namespace MediaPlayer
             }
             else
             {
-                nowMusic = list.getCurrentMusic();
-                if (nowMusic != "")
-                {
-                    this.musicName.Text = getName(nowMusic);
-                }
-                else
-                {
-                    this.musicName.Text = "暂无播放";
-                }
+                //nowMusic = list.getCurrentMusic();
+                //if (nowMusic != "")
+                //{
+                //    this.musicName.Text = getName(nowMusic);
+                //}
+                //else
+                //{
+                //    this.musicName.Text = "暂无播放";
+                //}
             }
         }
 
@@ -143,6 +155,7 @@ namespace MediaPlayer
                 {
                     this.isStopping = false;
                     musicPlay.PlayMusic(nowMusic);
+                    musicPlay.setVolume(volBar.Value);
                     musicPlay.seekToPosition(progressBar.Value * 1000);
                 }
                 else
@@ -203,6 +216,8 @@ namespace MediaPlayer
             else
             {
                 this.musicName.Text = "暂无播放";
+                this.labelBegin.Text = intTimeToString(0);
+                this.labelEnd.Text = intTimeToString(0);
             }
         }
 
@@ -231,6 +246,8 @@ namespace MediaPlayer
             else
             {
                 this.musicName.Text = "暂无播放";
+                this.labelBegin.Text = intTimeToString(0);
+                this.labelEnd.Text = intTimeToString(0);
             }
         }
 
@@ -257,6 +274,7 @@ namespace MediaPlayer
             sw.WriteLine("list.index="+list.index.ToString());
             sw.WriteLine("list.playChoice="+list.playChoice.ToString());
             sw.WriteLine("progressBar.Value=" + progressBar.Value.ToString());
+            sw.WriteLine("volBar.Value=" + volBar.Value.ToString());
             sw.Close();
             fs.Close();
         }
@@ -295,13 +313,22 @@ namespace MediaPlayer
                 {
                     progress = int.Parse(ret[1]);
                 }
+                else if (ret[0] == "volBar.Value")
+                {
+                    this.volBar.Value = int.Parse(ret[1]);
+                }
                 line = sr.ReadLine();
             }
             sr.Close();
             fs.Close();
 
-            this.musicName.Text = getName(nowMusic);
             this.updatePlayMode();
+            if(nowMusic != list.getCurrentMusic())
+            {
+                nowMusic = "";
+                list.index = -1;
+            }
+            this.musicName.Text = getName(nowMusic);
             int duration = list.getCurrentTime();
             this.progressBar.Maximum = duration;
             this.ctrlBar.Maximum = duration;
@@ -380,5 +407,10 @@ namespace MediaPlayer
             }
         }
         delegate void Change();
+
+        private void volBar_ValueChanged(object sender, EventArgs e)
+        {
+            musicPlay.setVolume(this.volBar.Value);
+        }
     }
 }

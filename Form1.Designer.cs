@@ -39,6 +39,7 @@
             this.picMode = new System.Windows.Forms.PictureBox();
             this.btnList = new System.Windows.Forms.Button();
             this.volBar = new System.Windows.Forms.TrackBar();
+            this.labelVol = new System.Windows.Forms.Label();
             this.labelEnd = new System.Windows.Forms.Label();
             this.labelBegin = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -64,7 +65,7 @@
             this.mvMenu});
             this.funcMenu.Location = new System.Drawing.Point(0, 0);
             this.funcMenu.Name = "funcMenu";
-            this.funcMenu.Size = new System.Drawing.Size(614, 26);
+            this.funcMenu.Size = new System.Drawing.Size(614, 30);
             this.funcMenu.TabIndex = 0;
             this.funcMenu.Text = "menuStrip1";
             // 
@@ -99,19 +100,21 @@
             // 
             // ctrlPanel
             // 
-            this.ctrlPanel.ColumnCount = 6;
+            this.ctrlPanel.ColumnCount = 7;
             this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
+            this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 17.75244F));
+            this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 26.38437F));
+            this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20.68404F));
+            this.ctrlPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 5F));
             this.ctrlPanel.Controls.Add(this.picLast, 0, 0);
             this.ctrlPanel.Controls.Add(this.picPlay, 1, 0);
             this.ctrlPanel.Controls.Add(this.picNext, 2, 0);
-            this.ctrlPanel.Controls.Add(this.picMode, 5, 0);
-            this.ctrlPanel.Controls.Add(this.btnList, 4, 0);
-            this.ctrlPanel.Controls.Add(this.volBar, 3, 0);
+            this.ctrlPanel.Controls.Add(this.picMode, 6, 0);
+            this.ctrlPanel.Controls.Add(this.btnList, 5, 0);
+            this.ctrlPanel.Controls.Add(this.volBar, 4, 0);
+            this.ctrlPanel.Controls.Add(this.labelVol, 3, 0);
             this.ctrlPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ctrlPanel.Location = new System.Drawing.Point(0, 68);
             this.ctrlPanel.Margin = new System.Windows.Forms.Padding(0);
@@ -166,9 +169,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.picMode.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picMode.Image = global::MediaPlayer.Properties.Resources.icon_sequence;
-            this.picMode.Location = new System.Drawing.Point(580, 3);
+            this.picMode.Location = new System.Drawing.Point(584, 3);
             this.picMode.Name = "picMode";
-            this.picMode.Size = new System.Drawing.Size(31, 56);
+            this.picMode.Size = new System.Drawing.Size(27, 56);
             this.picMode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picMode.TabIndex = 3;
             this.picMode.TabStop = false;
@@ -178,9 +181,9 @@
             // 
             this.btnList.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.btnList.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btnList.Location = new System.Drawing.Point(426, 7);
+            this.btnList.Location = new System.Drawing.Point(462, 7);
             this.btnList.Name = "btnList";
-            this.btnList.Size = new System.Drawing.Size(121, 47);
+            this.btnList.Size = new System.Drawing.Size(116, 47);
             this.btnList.TabIndex = 4;
             this.btnList.Text = "播放列表";
             this.btnList.UseVisualStyleBackColor = true;
@@ -189,29 +192,48 @@
             // volBar
             // 
             this.volBar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.volBar.LargeChange = 1;
-            this.volBar.Location = new System.Drawing.Point(186, 3);
-            this.volBar.Maximum = 100;
+            this.volBar.LargeChange = 50;
+            this.volBar.Location = new System.Drawing.Point(295, 3);
+            this.volBar.Maximum = 1000;
             this.volBar.Name = "volBar";
-            this.volBar.Size = new System.Drawing.Size(147, 56);
+            this.volBar.Size = new System.Drawing.Size(156, 56);
+            this.volBar.SmallChange = 50;
             this.volBar.TabIndex = 5;
+            this.volBar.Value = 1000;
+            this.volBar.ValueChanged += new System.EventHandler(this.volBar_ValueChanged);
+            // 
+            // labelVol
+            // 
+            this.labelVol.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelVol.AutoSize = true;
+            this.labelVol.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelVol.Location = new System.Drawing.Point(183, 0);
+            this.labelVol.Margin = new System.Windows.Forms.Padding(0);
+            this.labelVol.Name = "labelVol";
+            this.labelVol.Padding = new System.Windows.Forms.Padding(0, 20, 20, 20);
+            this.labelVol.Size = new System.Drawing.Size(82, 62);
+            this.labelVol.TabIndex = 6;
+            this.labelVol.Text = "音量：";
             // 
             // labelEnd
             // 
             this.labelEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelEnd.AutoSize = true;
-            this.labelEnd.Location = new System.Drawing.Point(564, 42);
+            this.labelEnd.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.labelEnd.Location = new System.Drawing.Point(549, 42);
             this.labelEnd.Name = "labelEnd";
-            this.labelEnd.Size = new System.Drawing.Size(47, 15);
+            this.labelEnd.Size = new System.Drawing.Size(53, 18);
             this.labelEnd.TabIndex = 2;
             this.labelEnd.Text = "--:--";
             // 
             // labelBegin
             // 
             this.labelBegin.AutoSize = true;
+            this.labelBegin.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.labelBegin.Location = new System.Drawing.Point(13, 42);
             this.labelBegin.Name = "labelBegin";
-            this.labelBegin.Size = new System.Drawing.Size(47, 15);
+            this.labelBegin.Size = new System.Drawing.Size(53, 18);
             this.labelBegin.TabIndex = 1;
             this.labelBegin.Text = "00:00";
             // 
@@ -252,9 +274,10 @@
             // 
             this.musicName.AutoSize = true;
             this.musicName.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.musicName.Location = new System.Drawing.Point(0, 336);
+            this.musicName.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.musicName.Location = new System.Drawing.Point(0, 333);
             this.musicName.Name = "musicName";
-            this.musicName.Size = new System.Drawing.Size(15, 15);
+            this.musicName.Size = new System.Drawing.Size(17, 18);
             this.musicName.TabIndex = 2;
             this.musicName.Text = " ";
             // 
@@ -305,6 +328,7 @@
         private System.Windows.Forms.Button btnList;
         private System.Windows.Forms.Label musicName;
         private System.Windows.Forms.TrackBar volBar;
+        private System.Windows.Forms.Label labelVol;
     }
 }
 

@@ -29,7 +29,7 @@ namespace MediaPlayer
             this.playList.Columns[1].Width = -2;
             this.playList.Columns[0].Width = -1;
             this.playList.Columns[2].Width = -2;
-            this.Size = new Size(600, 500);
+            this.Size = new Size(700, 500);
             ImageList imageList = new ImageList();
             imageList.Images.Add(Properties.Resources.icon_mp3);
             this.playList.SmallImageList = imageList;
@@ -45,15 +45,35 @@ namespace MediaPlayer
             line = sr.ReadLine();
             while (line != null)
             {
-                if (!this.musicList.Contains(line))
+                string path = "";
+                string[] towardsTime = {};
+                if(line.Contains("="))
                 {
-                    this.musicList.Add(line);
-                    string temp = line.Replace("\\" + "\\", "\\");
+                    towardsTime = line.Split('=');
+                    for (int i = 0; i < towardsTime.Length - 1; i++)
+                    {
+                        path += towardsTime[i];
+                    }
+                }
+                else
+                {
+                    path = line;
+                }
+                if (!this.musicList.Contains(path))
+                {
+                    this.musicList.Add(path);
+                    string temp = path.Replace("\\" + "\\", "\\");
                     string[] ret = temp.Split('\\');
+                    string duration = "";
+                    try
+                    {
+                        duration = towardsTime[towardsTime.Length - 1];
+                    }
+                    catch(Exception) { }
                     string name = ret[ret.Length - 1];
                     ListViewItem item = new ListViewItem((this.playList.Items.Count+1).ToString(), 0);
                     item.SubItems.Add(name);
-                    item.SubItems.Add(getMusicTime(line));
+                    item.SubItems.Add(duration);
                     this.playList.Items.Add(item);
                 }
                 line = sr.ReadLine();
@@ -102,17 +122,28 @@ namespace MediaPlayer
                 string temp = filePathItem.Replace("\\", "\\" + "\\");
                 if (!this.musicList.Contains(temp))
                 {
-                    sw.WriteLine(temp);
+                    string duration = getMusicTime(temp);
+                    if(duration != "")
+                    {
+                        sw.WriteLine(temp + "=" + duration);
+                    }
+                    else
+                    {
+                        sw.WriteLine(temp);
+                    }
                     this.musicList.Add(temp);
                     string[] ret = filePathItem.Split('\\');
                     string name = ret[ret.Length - 1];
                     //Console.WriteLine(name);
                     ListViewItem item = new ListViewItem((this.playList.Items.Count + 1).ToString(), 0);
                     item.SubItems.Add(name);
-                    item.SubItems.Add(getMusicTime(temp));
+                    item.SubItems.Add(duration);
                     this.playList.Items.Add(item);
                 }
             }
+            this.playList.Columns[1].Width = -2;
+            this.playList.Columns[0].Width = -1;
+            this.playList.Columns[2].Width = -2;
             sw.Close();
             fs.Close();
         }
@@ -253,22 +284,37 @@ namespace MediaPlayer
             this.musicList.Sort();
             foreach(string fileName in musicList)
             {
-                sw.WriteLine(fileName);
+                string duration = getMusicTime(fileName);
+                if(duration != "")
+                {
+                    sw.WriteLine(fileName + "=" + duration);
+                }
+                else
+                {
+                    sw.WriteLine(fileName);
+                }
                 string temp = fileName.Replace("\\" + "\\", "\\");
                 string[] ret = temp.Split('\\');
                 string name = ret[ret.Length - 1];
                 ListViewItem item = new ListViewItem((this.playList.Items.Count + 1).ToString(), 0);
                 item.SubItems.Add(name);
-                item.SubItems.Add(getMusicTime(fileName));
+                item.SubItems.Add(duration);
                 this.playList.Items.Add(item);
                 //Console.WriteLine(fileName);
             }
+            this.playList.Columns[1].Width = -2;
+            this.playList.Columns[0].Width = -1;
+            this.playList.Columns[2].Width = -2;
             sw.Close();
             fs.Close();
         }
 
         public string getMusicTime(string fileName)
         {
+            if(fileName == "")
+            {
+                return "";
+            }
             string dirName = Path.GetDirectoryName(fileName);//获取文件夹名称
             string voiceName = Path.GetFileName(fileName);//获取文件名
             FileInfo file = new FileInfo(fileName);
@@ -298,7 +344,15 @@ namespace MediaPlayer
 
         public int getCurrentTime()
         {
-            return timeToInt(getMusicTime(getCurrentMusic()));
+            string music = getCurrentMusic();
+            if(music != "")
+            {
+                return timeToInt(getMusicTime(music));
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         public int findMusic(string str)
@@ -316,6 +370,7 @@ namespace MediaPlayer
         private void searchTool_Click(object sender, EventArgs e)
         {
             searchForm searchDlg = new searchForm();
+            searchDlg.StartPosition = FormStartPosition.CenterParent;
             string str = "";
             if (searchDlg.ShowDialog() == DialogResult.OK)
             {
@@ -336,10 +391,17 @@ namespace MediaPlayer
                 MessageBox.Show("未查找到内容");
             }
         }
-
-        private void listForm_FormClosing(object sender, FormClosingEventArgs e)
+    
+        public string getMusicAt(int pos)
         {
-            this.DialogResult = DialogResult.Cancel;
+            try
+            {
+                return this.musicList[pos];
+            }
+            catch(Exception)
+            {
+                return "";
+            }
         }
     }
 }
