@@ -103,6 +103,7 @@ namespace MediaPlayer
         {
             list.Location = new Point(this.Location.X, this.Location.Y + this.Size.Height);
             list.StartPosition = FormStartPosition.Manual;
+            list.setUI();
             if (list.ShowDialog() != DialogResult.Cancel)
             {
                 nowMusic = list.getCurrentMusic();

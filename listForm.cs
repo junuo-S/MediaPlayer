@@ -26,15 +26,29 @@ namespace MediaPlayer
             lvwColumnSorter = new ListViewColumnSorter();
             this.playList.ListViewItemSorter = lvwColumnSorter;
             readFile();
-            this.playList.Columns[1].Width = -2;
-            this.playList.Columns[0].Width = -1;
-            this.playList.Columns[2].Width = -2;
-            this.Size = new Size(700, 500);
             ImageList imageList = new ImageList();
             imageList.Images.Add(Properties.Resources.icon_mp3);
             this.playList.SmallImageList = imageList;
             this.index = 0;
             this.playChoice = 0;
+        }
+
+        public void setUI()
+        {
+            //this.playList.Columns[1].Width = -2;
+            //this.playList.Columns[0].Width = -1;
+            //this.playList.Columns[2].Width = -2;
+            playList.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            int w = 35;
+            for(int i=0;i<playList.Columns.Count;i++)
+            {
+                w += playList.Columns[i].Width;
+            }
+            if(w<400)
+            {
+                w = 400;
+            }
+            this.Size = new Size(w, 500);
         }
 
         public void readFile()
@@ -141,9 +155,7 @@ namespace MediaPlayer
                     this.playList.Items.Add(item);
                 }
             }
-            this.playList.Columns[1].Width = -2;
-            this.playList.Columns[0].Width = -1;
-            this.playList.Columns[2].Width = -2;
+            setUI();
             sw.Close();
             fs.Close();
         }
@@ -302,9 +314,7 @@ namespace MediaPlayer
                 this.playList.Items.Add(item);
                 //Console.WriteLine(fileName);
             }
-            this.playList.Columns[1].Width = -2;
-            this.playList.Columns[0].Width = -1;
-            this.playList.Columns[2].Width = -2;
+            setUI();
             sw.Close();
             fs.Close();
         }
