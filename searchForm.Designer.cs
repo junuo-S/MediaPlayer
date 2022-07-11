@@ -76,6 +76,7 @@
             this.textSearch.Size = new System.Drawing.Size(333, 28);
             this.textSearch.TabIndex = 1;
             this.textSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textSearch.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textSearch_KeyPress);
             // 
             // btnSearch
             // 

@@ -29,5 +29,13 @@ namespace MediaPlayer
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+        private void textSearch_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char) Keys.Enter)
+            {
+                btnSearch_Click(btnSearch, new EventArgs());
+            }
+        }
     }
 }

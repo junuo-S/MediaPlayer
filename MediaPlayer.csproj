@@ -60,6 +60,9 @@
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>音乐.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
@@ -221,6 +224,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\搜索.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="音乐.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
