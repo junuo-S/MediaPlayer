@@ -123,15 +123,15 @@ namespace MediaPlayer
             }
             else
             {
-                nowMusic = list.getCurrentMusic();
-                if (nowMusic != "")
-                {
-                    this.musicName.Text = getName(nowMusic);
-                }
-                else
-                {
-                    this.musicName.Text = "暂无播放";
-                }
+                //nowMusic = list.getCurrentMusic();
+                //if (nowMusic != "")
+                //{
+                //    this.musicName.Text = getName(nowMusic);
+                //}
+                //else
+                //{
+                //    this.musicName.Text = "暂无播放";
+                //}
             }
         }
 
